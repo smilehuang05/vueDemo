@@ -8,23 +8,24 @@
           </div>
         </el-form-item>
         <el-form-item prop='username'>
-          <el-input v-model="form.username" placeholder='请输入账户'>
+          <el-input v-model="form.username" placeholder='请输入账户' >
             <i slot="prefix" class="iconfont icon-zhanghao"></i>
           </el-input>
         </el-form-item>
         <el-form-item prop='password'>
-          <el-input v-model="form.password" placeholder='请输入密码'>
+          <el-input v-model="form.password" placeholder='请输入密码' type='password'>
             <i slot="prefix" class="iconfont icon-mima"></i>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="login-btn">登录</el-button>
+          <el-button type="primary" class="login-btn"  @click='loginIn("form")'>登录</el-button>
         </el-form-item>
          
       </el-form>
    </div> 
 </template>
 <script>
+import {checkUser} from '@/api/index.js'
 export default {
  data(){
    return{
@@ -42,6 +43,31 @@ export default {
        ]
      } 
  }
+ },
+ methods:{
+   loginIn(formName){
+       this.$refs[formName].validate(valid=>{
+         //只有校验通过才执行函数
+         if(valid){
+           checkUser(this.form).then(res=>{
+             //如果成功跳转到首页
+             if(res.meta.status===200){
+               this.$router.push({name:'Home'})
+             }else{
+            //如果失败，展示提示信息
+               this.$message({
+                 message: res.meta.msg,
+                 type: 'error'
+               });
+             }
+            
+             console.log(res)
+           })
+         }else{
+           console.log('校验不通过')
+         }
+       })
+   }
  }
 }
 </script>
