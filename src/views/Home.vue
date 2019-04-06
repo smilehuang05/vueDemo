@@ -2,11 +2,11 @@
   <div class="home">
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside width="auto">
         <div class='logo'>
           
         </div>
-        <el-menu default-active="2" class="el-menu-vertical-demo el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" >
+        <el-menu default-active="2" class="el-menu-vertical-demo el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse" >
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
@@ -19,8 +19,21 @@
         </el-menu>
       </el-aside>
       <el-container>
-        <el-header>Header</el-header>
-        <el-main>Main</el-main>
+        <!-- header部分 -->
+        <el-header class="headerStyle">
+           <i class="iconfont icon-caidan" @click='toggleCollapse'></i>
+           <span class="system-title">电商后台管理系统</span>
+           <div>
+             <span class="welcome">
+               你好,xxx
+             </span>
+             <el-button type="text" @click='loginOut'>退出</el-button>
+           </div>
+        </el-header>
+        <!-- 中间内容部分 -->
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -28,6 +41,11 @@
 <script>
 import { getUserList } from '@/api/index.js'
 export default {
+  data(){
+    return{
+      isCollapse:false
+    }
+  },
   mounted() {
     let params = { params: { query: '', pagenum: 1, pagesize: 1 } }
     getUserList(params).then(res => {
@@ -40,7 +58,16 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    }
+    },
+    toggleCollapse(){
+      this.isCollapse = !this.isCollapse;
+    },
+    loginOut(){
+      //清除登录状态，及保存再localStorage中的token
+      localStorage.removeItem('myToken');
+      //跳转到登录页面
+      this.$router.push({name:'Login'})
+  }
   }
 }
 </script>
@@ -65,6 +92,25 @@ export default {
     background:url(../assets/logo.png);
     background-size: cover;
     background-color: #989898;
+  }
+  .icon-caidan,.system-title{
+    font-size: 36px;
+    line-height: 60px;
+    font-weight: bold;
+    color: #ccc;
+    cursor: pointer;
+  }
+  .system-title{
+    font-size: 26px;
+    
+  }
+  .welcome{
+    color: #ccc;
+    line-height: 60px;
+  }
+  .headerStyle{
+    display: flex;
+    justify-content:space-between;  
   }
 }
 </style>
