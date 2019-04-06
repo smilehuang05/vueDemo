@@ -25,7 +25,7 @@
            <span class="system-title">电商后台管理系统</span>
            <div>
              <span class="welcome">
-               你好,xxx
+               你好,{{$store.getters.username}}
              </span>
              <el-button type="text" @click='loginOut'>退出</el-button>
            </div>

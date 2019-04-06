@@ -50,9 +50,10 @@ export default {
          //只有校验通过才执行函数
          if(valid){
            checkUser(this.form).then(res=>{
-             //如果成功跳转到首页,将token保存到localStorage
+             //如果成功跳转到首页,将token保存到localStorage,将usrname保存到vuex的state中
              if(res.meta.status===200){
                localStorage.setItem('myToken',res.data.token)
+               this.$store.commit('setUsername',res.data.username)
                this.$router.push({name:'Home'})
              }else{
             //如果失败，展示提示信息
