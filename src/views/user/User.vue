@@ -11,14 +11,13 @@
   </el-row>
 
   <el-row>
-  <el-col :span="24">
-    <div>
-      <el-input placeholder="请输入内容" class="search-input">
-        <el-button slot="append" icon="el-icon-search"></el-button>
+  <el-col :span="24"> 
+    <!-- 给组件绑定原生事件的话，需要一个.native的修饰符-->
+      <el-input placeholder="请输入内容" class="search-input" v-model="query" @keydown.native.enter='initList'>
+        <el-button slot="append" icon="el-icon-search" @click='initList'></el-button>
       </el-input>
-   
   <el-button type="success" plain>添加用户</el-button>
-  </div>
+  
   </el-col>
   </el-row>
 
@@ -53,10 +52,10 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="1"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="10"
+      :page-sizes="[1, 2, 3, 4]"
+      :page-size="1"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="40"
+      :total='total'
       class="page">
     </el-pagination>
   </div>
@@ -69,7 +68,11 @@ export default {
       return {
         userList: [{
         }],
-        value3:''
+        value3:'',
+        query:'',
+        total:0,
+        pagesize:1,
+        pagenum:1
     
       }
     },
@@ -79,15 +82,20 @@ export default {
     methods: {
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
+        this.pagesize=val
+        this.initList()
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+        this.pagenum =val
+        this.initList()
       },
       //初始化表格的数据
       initList(){
-        getUserList({params:{query:'',pagenum:1,pagesize:3}}).then(res=>{
+        getUserList({params:{query:this.query,pagenum:this.pagenum,pagesize:this.pagesize}}).then(res=>{
           console.log(res)
           this.userList = res.data.users
+          this.total= res.data.total
         })
       }
     }

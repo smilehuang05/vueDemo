@@ -13,7 +13,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop='password'>
-          <el-input v-model="form.password" placeholder='请输入密码' type='password'>
+          <el-input v-model="form.password" placeholder='请输入密码' type='password' @keydown.native.enter='loginIn("form")'>
             <i slot="prefix" class="iconfont icon-caidan"></i>
           </el-input>
         </el-form-item>
@@ -39,7 +39,7 @@ export default {
         
        ],
        password:[
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur'  }
        ]
      } 
  }
