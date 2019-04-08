@@ -21,13 +21,32 @@
   </div>
   </el-col>
   </el-row>
-  <el-table :data="tableData" border style="width: 100%">
-    <el-table-column prop="date" label="日期" width="180">
+
+  <el-table :data="userList" border style="width: 100%">
+    <el-table-column type="index" width="50">
     </el-table-column>
-    <el-table-column prop="name" label="姓名" width="180">
+   
+  <el-table-column prop="username" label="姓名" width="180">
+  </el-table-column>
+  <el-table-column prop="email" label="邮箱" width="180">
+  </el-table-column>
+  <el-table-column prop="mobile" label="电话">
+  </el-table-column>
+  <el-table-column label="用户状态">
+    <template slot-scope="scope">
+      <el-switch v-model="value3">
+      </el-switch>
+
+      </template>
     </el-table-column>
-    <el-table-column prop="address" label="地址">
+    <el-table-column label="操作">
+      <template slot-scope="scope">
+        <el-button size="mini" icon="el-icon-edit" type='primary' plain></el-button>
+        <el-button size="mini" icon="el-icon-delete" type="danger" plain></el-button>
+         <el-button size="mini" icon="el-icon-check" type="warning" plain></el-button>
+      </template>
     </el-table-column>
+
   </el-table>
 
   <el-pagination
@@ -44,27 +63,18 @@
 
 </template>
 <script>
+import {getUserList} from '@/api'
 export default {
    data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+        userList: [{
+        }],
+        value3:''
+    
       }
+    },
+    created(){
+      this.initList();
     },
     methods: {
       handleSizeChange(val) {
@@ -72,6 +82,13 @@ export default {
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+      },
+      //初始化表格的数据
+      initList(){
+        getUserList({params:{query:'',pagenum:1,pagesize:3}}).then(res=>{
+          console.log(res)
+          this.userList = res.data.users
+        })
       }
     }
 
