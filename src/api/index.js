@@ -22,9 +22,27 @@ export const checkUser = params => {
 
 //获取用户列表
 export const getUserList = params => {
-        return axios.get('users', params).then(res => res.data)
-    }
-    //更改用户状态
+    return axios.get('users', params).then(res => res.data)
+}
+
+//更改用户状态
 export const changeUserState = params => {
     return axios.put(`users/${params.uid}/state/${params.type}`).then(res => res.data)
+}
+
+//添加用户
+export const addUser = params => {
+    return axios.post('users', params).then(res => res.data)
+}
+
+//根据ID获取用户信息
+export const getUserById = params => {
+    return axios.get(`users/${params}`).then(res => res.data)
+}
+
+//编辑用户信息
+
+export const editUser = params => {
+    return axios.put(`users/${params.id}`, params).then(res => res.data)
+
 }
