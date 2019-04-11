@@ -6,13 +6,13 @@
         <div class='logo'>
           
         </div>
-        <el-menu default-active="2" class="el-menu-vertical-demo el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse" >
+        <el-menu  class="el-menu-vertical-demo el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse" :router='true'>
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="2">
+            <el-menu-item index="/user">
               <i class="el-icon-menu"></i>用户列表</el-menu-item>
           </el-submenu>
          
